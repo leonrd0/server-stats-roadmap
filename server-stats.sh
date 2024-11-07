@@ -1,34 +1,45 @@
 #!/bin/bash
 
-# ---------------------------------------
-# Requirements
-#   You are required to write a script server-stats.sh that can analyse basic server performance stats. You should be able to run the script on any Linux server and it should give you the following stats:
-    #    Total CPU usage
-    #    Total memory usage (Free vs Used including percentage)
-    #    Total disk usage (Free vs Used including percentage)
-    #    Top 5 processes by CPU usage
-    #    Top 5 processes by memory usage
-# Stretch goal: Feel free to optionally add more stats such as os version, uptime, load average, logged in users, failed login attempts etc.
-# ---------------------------------------
+# Function to display CPU usage
+function cpu_usage() {
+    echo "---- CPU USAGE ----"
+    top -bn1 | grep "Cpu(s)" | awk '{print "Total CPU usage: " 100 - $8"%"}'
+    echo
+}
 
+# Function to display RAM usage
+function ram_usage(){
+    echo "---- RAM USAGE ----"
+    free -m | awk '/Mem:/ {print "Total RAM usage: " $3 "MB of " $2 "MB"}'
+    echo
+}
 
-# ---------------------------------------
-# functions:
-# to display cpu usage
+# Function to display Disk usage
+function disk_usage() {
+    echo "---- DISK USAGE ----"
+    df -h --total | awk '/total/ {print "Total disk usage: " $3 " of " $2 " (" $5 " used)"}'
+    echo
+}
 
-# to display ram usage
+# Function to display top 5 processes by CPU usage
+function processes_cpu() {
+    echo "---- TOP 5 PROCESSES BY CPU USAGE ----"
+    echo "COMMAND          %CPU"
+    ps -eo comm,%cpu --sort=-%cpu | head -n 6
+    echo
+}
 
-# to display disk usage
+# Function to display top 5 processes by RAM usage
+function processes_ram(){
+    echo "---- TOP 5 PROCESSES BY RAM USAGE ----"
+    echo "COMMAND          %MEM"
+    ps -eo comm,%mem --sort=-%mem | head -n 6
+    echo
+}
 
-# to display top 5 processes by CPU usage
-
-# to display top 5 processes by memory usage
-
-# ---------------------------------------
-
-# ---------------------------------------
-# main code
-
-
-
-# ---------------------------------------
+# Main
+cpu_usage
+ram_usage
+disk_usage
+processes_cpu
+processes_ram
