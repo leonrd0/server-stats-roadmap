@@ -15,9 +15,9 @@ The script provides the following features:
 
 1. Clone this repository or copy the code to a `.sh` file on your server.
 2. Grant execute permission to the script:
-   ```bash
+```bash
    chmod +x your_script.sh
-    ```
+```
 
 ## Run the script
    ```bash
